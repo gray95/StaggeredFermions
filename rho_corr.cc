@@ -107,7 +107,7 @@ int main (int argc, char ** argv)
   LatticeComplex one(&Grid), minusOne(&Grid); one = 1; minusOne = -1;
   LatticeInteger coor(&Grid);
   for(int i=0; i<3; i++) {
-    LatticeCoordinate(coor,i);	// fills coor with value of coord in i+1 dir.
+    LatticeCoordinate(coor,i);	// fills coor with value of coord in i dir.
     phases[i] = where((mod(coor,2)==1), minusOne, one);
   }
 
@@ -204,7 +204,7 @@ int main (int argc, char ** argv)
   // cout << "Qprop = " << Qprop << endl ; 
 
   int t_dir = 3;
-  int nt =latt_size[t_dir];
+  int nt = latt_size[t_dir];
 
   // pion correlator
   std::vector<vector<TComplex>> corr(3, vector<TComplex>(nt)) ;
@@ -215,7 +215,7 @@ int main (int argc, char ** argv)
   for(int j=0; j<3; j++) {
     c[j] = trace(Qprop * adj(Qprop)) ; 
     c[j] = c[j] * phases[j];	// goto line 104 to see calculation
-    }
+  }
 
   //  this correlator over the lattice is summed over the spatial
   //   lattice at each timeslice t.
@@ -227,15 +227,14 @@ int main (int argc, char ** argv)
   // output the correlators
 #if 1
   for(int m=0; m<3; m++) {
-    for(int tt = 0 ; tt < nt ; ++tt)
-      {
+    for(int tt = 0 ; tt < nt ; ++tt) {
+      
         double ttt = real(corr[m][tt]) ;
         cout << tt << " "  <<  ttt  << endl ;
-      }
     }
+  }
 #endif
-  //  cout << "corr = " << corr << endl ; 
 
-  // End of the Grid
-  Grid_finalize();
+Grid_finalize();
+
 }
