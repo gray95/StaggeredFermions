@@ -94,7 +94,7 @@ int main (int argc, char ** argv)
     }
 
 
-  std::vector<int> seeds({1,2,3,4});
+  std::vector<int> seeds({11,22,33,44});
   GridParallelRNG          pRNG(&Grid);  pRNG.SeedFixedIntegers(seeds);
 
   FermionField result(&Grid); result=zero;
@@ -119,7 +119,7 @@ int main (int argc, char ** argv)
   SU3::HotConfiguration(pRNG,Umu);
   //SU3::ColdConfiguration(Umu); // Umu = 1  
 
-  const int g_trans =  0;
+  const int g_trans = 1;
   if( g_trans == 1)
     {
       LatticeColourMatrix   g(&Grid); // Gauge xform
@@ -227,6 +227,7 @@ int main (int argc, char ** argv)
   // output the correlators
 #if 1
   for(int m=0; m<3; m++) {
+    cout << "\nCorrelator in dir " << m << endl; 
     for(int tt = 0 ; tt < nt ; ++tt) {
       
         double ttt = real(corr[m][tt]) ;
