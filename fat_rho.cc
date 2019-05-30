@@ -1,18 +1,4 @@
-    /*************************************************************************************
-
-
-    Perhaps a better starting point:
-    typedef typename ImprovedStaggeredFermionR::FermionField FermionField; 
-
-
-    Grid physics library, www.github.com/paboyle/Grid 
-
-    Source file: ./tests/Test_wilson_cg_unprec.cc
-    Starting point:    Test_staggered_cg_unprec.cc 
-
-
-    Copyright (C) 2015
-
+/*
 Author: Azusa Yamaguchi <ayamaguc@staffmail.ed.ac.uk>
 Author: Peter Boyle <paboyle@ph.ed.ac.uk>
 
@@ -122,25 +108,24 @@ int main (int argc, char ** argv)
 //		Staggered Phases
 ///////////////////////////////////////////////////////////////
 
-  LatticeComplex phases[4] = {&Grid, &Grid, &Grid, &Grid}; 
+  LatticeComplex phases(&Grid); 
   LatticeComplex one(&Grid), minusOne(&Grid); one = 1; minusOne = -1;
-  LatticeInteger coor[4] = {&Grid, &Grid, &Grid, &Grid}; LatticeInteger r[4] = {&Grid, &Grid, &Grid, &Grid};
+  LatticeInteger coor[4] = {&Grid, &Grid, &Grid, &Grid}; LatticeInteger r(&Grid);
 
   for(int m=0; m<4; m++) {
     LatticeCoordinate(coor[m], m);  
   }
-  r[0] = coor[0] + coor[1] + coor[2] + coor[3];
-  r[1] = r[0] - coor[0]; r[2] = r[1] - coor[1]; r[3] = coor[3];
 
-  for(int i=0; i<4; i++) {
-    phases[i] = where((mod(r[i],2)==1), minusOne, one);
-  }
+  r = coor[0] + coor[1] + coor[2] + coor[3];
+
+  phases = where((mod(r,2)==0), minusOne, one);
+  
 
 //////////////////////////////////////////////////////////////
 
   LatticeGaugeField Umu(&Grid); 
-  //SU3::HotConfiguration(pRNG,Umu); 
-  SU3::ColdConfiguration(Umu); // Umu = 1
+  SU3::HotConfiguration(pRNG,Umu); 
+  //SU3::ColdConfiguration(Umu); // Umu = 1
 
   int t_dir = 3;
   int nt = latt_size[t_dir];
@@ -228,7 +213,7 @@ int main (int argc, char ** argv)
 
   for(int j=0; j<3; j++) {
     c[j] = trace(adj(Qprop[0]) * Qprop[1]) ; 
-    c[j] = c[j] * phases[j];	
+    c[j] = c[j] * phases;	
   }
 
   //  this correlator over the lattice is summed over the spatial
