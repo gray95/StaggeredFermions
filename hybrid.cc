@@ -71,8 +71,8 @@ LatticeStaggeredFermion hybrid_op(LatticeGaugeField Umu, LatticeStaggeredFermion
   int i, j;
   if(dir==0) { i=1; j=2;} if(dir==1) {i=2; j=0;} if(dir==2) {i=0; j=1;}
   // will need another conditional to ensure dir < i, dir < j.
-  WilsonLoops<StaggeredImplR>::FieldStrength(Bi, Umu, j, dir); 
-  WilsonLoops<StaggeredImplR>::FieldStrength(Bj, Umu, i, dir); 
+  WilsonLoops<PeriodicGimplR>::FieldStrength(Bi, Umu, j, dir); 
+  WilsonLoops<PeriodicGimplR>::FieldStrength(Bj, Umu, i, dir); 
 
   LatticeStaggeredFermion tmp(grid);
 
@@ -142,7 +142,7 @@ int main (int argc, char ** argv)
 
   anti_periodic(Umu, nt);
 
-  const int g_trans = 1;
+  const int g_trans = 0;
   if( g_trans == 1)
     {
       LatticeColourMatrix   g(&Grid); // Gauge xform
@@ -191,8 +191,7 @@ int main (int argc, char ** argv)
         cout << "---------------------------------------------" << endl ; 
 
         // create point source
-        // tests/core/Test_staggered5Dvec.cc
-      
+     
         std::vector<int> site({0,0,0,0});
         ColourVector cv = zero;
         cv()()(ic)=1.0;  
@@ -210,7 +209,7 @@ int main (int argc, char ** argv)
         out = zero ;  // intial guess
         CG(HermOp,local_src,out);
 
-	if(k) out = hybrid_op(Umu, out, signs, 0, 1);
+	if(k) out = hybrid_op(Umu, out, signs, x, 1);
         // add solution to propagator structure
         FermToProp_s(Qprop[k], out , ic  ) ; 
       }
