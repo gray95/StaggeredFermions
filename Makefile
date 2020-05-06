@@ -16,7 +16,7 @@
 #
 
 # The grid utility to extract the compile flags
-gridinstall=/home/gray/code/grid
+gridinstall=/home/gray/grid_code
 config=$(gridinstall)/bin/grid-config
 #
 #  flags from the grid utility program
@@ -29,11 +29,20 @@ COMPILER= g++
 # other libraries from SciDac
 
 
-pion_corr: staggered_pion.cc 
-	$(COMPILER) -g -o $@ $(CXXFLASGS)   staggered_pion.cc   $(LDFLAGS) $(LIBS) 
+hybrid: HybridMesons.cc 
+	$(COMPILER) -g -o $@ $(CXXFLASGS)  HybridMesons.cc   $(LDFLAGS) $(LIBS) 
 
-rho_corr: rho_corr.cc 
-	$(COMPILER) -g -o $@ $(CXXFLASGS)  rho_corr.cc   $(LDFLAGS) $(LIBS) 
+pion_corr: pion_corr.cc 
+	$(COMPILER) -g -o $@ $(CXXFLASGS)  pion_corr.cc   $(LDFLAGS) $(LIBS) 
+
+rho_corr: rho.cc 
+	$(COMPILER) -g -o $@ $(CXXFLASGS)  rho.cc   $(LDFLAGS) $(LIBS) 
+
+fat_beta: fatbeta.cc 
+	$(COMPILER) -g -o $@ $(CXXFLASGS)  fatbeta.cc   $(LDFLAGS) $(LIBS) 
+
+at_rho: fat_rho.cc 
+	$(COMPILER) -g -o $@ $(CXXFLASGS)  fat_rho.cc   $(LDFLAGS) $(LIBS) 
 
 lab: laboratory.cc
 	$(COMPILER) -g -o $@ $(CXXFLASGS)   laboratory.cc   $(LDFLAGS) $(LIBS) 

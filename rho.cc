@@ -146,7 +146,7 @@ int main (int argc, char ** argv)
 
   anti_periodic(Umu, nt);
 
-  const int g_trans = 1;
+  const int g_trans = 0;
   if( g_trans == 1)
     {
       LatticeColourMatrix   g(&Grid); // Gauge xform
