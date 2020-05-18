@@ -83,7 +83,7 @@ void anti_peroidic( LatticeGaugeField & Umu , int nt)
 
   PokeIndex<LorentzIndex>(Umu,U,mu);
 
-  cout << "Anti-peroidic boundary conditions in time applied" << endl ; 
+  cout << "Anti-periodic boundary conditions in time applied" << endl ; 
 }
 
 
@@ -113,10 +113,22 @@ int main (int argc, char ** argv)
   FermionField result(&Grid); result=zero;
   
    LatticeGaugeField Umu(&Grid); 
-
+   FieldMetaData header;
+     
+     std::cout <<GridLogMessage<<"**************************************"<<std::endl;
+     std::cout <<GridLogMessage<<"** Reading back ILDG conf    *********"<<std::endl;
+     std::cout <<GridLogMessage<<"**************************************"<<std::endl;
+     emptyUserRecord record;
+     std::string file("/home/gray/grid_code/grid-staggered/examples/ckpoint_ildg.4000");
+     
+     IldgReader _IldgReader;
+     _IldgReader.open(file);
+     _IldgReader.readConfiguration(Umu,header);
+     _IldgReader.close();
+   
    //  create a hot su3 configuration
   //  SU3::HotConfiguration(pRNG,Umu);
-  SU3::ColdConfiguration(Umu); // Umu = 1  
+//  SU3::ColdConfiguration(Umu); // Umu = 1  
 
   int t_dir = 3;
   int nt =latt_size[t_dir];

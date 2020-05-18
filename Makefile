@@ -29,23 +29,26 @@ COMPILER= g++
 # other libraries from SciDac
 
 
+test_hybrid: test_hybrid.cc 
+	$(COMPILER) -g -o $@ $(CXXFLASGS)  test_hybrid.cc   $(LDFLAGS) $(LIBS) 
+
 hybrid: HybridMesons.cc 
 	$(COMPILER) -g -o $@ $(CXXFLASGS)  HybridMesons.cc   $(LDFLAGS) $(LIBS) 
 
-pion_corr: pion_corr.cc 
+pion: pion_corr.cc 
 	$(COMPILER) -g -o $@ $(CXXFLASGS)  pion_corr.cc   $(LDFLAGS) $(LIBS) 
 
-rho_corr: rho.cc 
+rho: rho.cc 
 	$(COMPILER) -g -o $@ $(CXXFLASGS)  rho.cc   $(LDFLAGS) $(LIBS) 
 
 fat_beta: fatbeta.cc 
 	$(COMPILER) -g -o $@ $(CXXFLASGS)  fatbeta.cc   $(LDFLAGS) $(LIBS) 
 
-at_rho: fat_rho.cc 
+fat_rho: fat_rho.cc 
 	$(COMPILER) -g -o $@ $(CXXFLASGS)  fat_rho.cc   $(LDFLAGS) $(LIBS) 
 
 lab: laboratory.cc
 	$(COMPILER) -g -o $@ $(CXXFLASGS)   laboratory.cc   $(LDFLAGS) $(LIBS) 
 
 clean: 
-	rm  pion_corr rho_corr lab
+	rm  pion_corr rho_corr lab 
