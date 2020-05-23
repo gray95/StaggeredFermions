@@ -29,7 +29,7 @@ COMPILER= g++
 # other libraries from SciDac
 
 
-test_hybrid: test_hybrid.cc 
+test_hybrid: test_hybrid.cc hybrid_ops.h 
 	$(COMPILER) -g -o $@ $(CXXFLASGS)  test_hybrid.cc   $(LDFLAGS) $(LIBS) 
 
 hybrid: HybridMesons.cc 

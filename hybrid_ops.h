@@ -33,6 +33,20 @@ LatticeStaggeredFermion symm_shift(LatticeGaugeField &Umu, LatticeStaggeredFermi
   return tmp;
 }
 
+// remove the trace from a colour matrix
+void make_traceless(LatticeColourMatrix &B)
+{
+  GridBase *grid = B._grid;
+  LatticeColourMatrix con(grid) ;
+  con = 1/3.0 ;
+
+  LatticeComplex tt(grid);
+  tt = trace(B);
+  
+  B -= tt * con;
+
+}
+
 //###########################################################################################################
 
 
@@ -56,8 +70,14 @@ LatticeStaggeredFermion zeromp_local(LatticeGaugeField Umu, LatticeStaggeredFerm
   LatticeColourMatrix Bx(grid), By(grid), Bz(grid);
   WilsonLoops<PeriodicGimplR>::FieldStrength(Bx, Umu, 2, 1);
   WilsonLoops<PeriodicGimplR>::FieldStrength(By, Umu, 2, 0);
-  WilsonLoops<PeriodicGimplR>::FieldStrength(Bz, Umu, 1, 0);  
-  return ((signs[0]*signs[1]*Bx + signs[1]*signs[2]*By + signs[2]*signs[3]*Bz) * q);
+  WilsonLoops<PeriodicGimplR>::FieldStrength(Bz, Umu, 1, 0); 
+
+  make_traceless(Bx);
+  make_traceless(By);
+  make_traceless(Bz);
+  double milc_nrm = 8.0;
+ 
+  return (milc_nrm * (signs[0]*Bx + signs[0]*signs[1]*By + signs[1]*signs[2]*Bz) * q);
   
 }
 
@@ -92,8 +112,11 @@ LatticeStaggeredFermion onemp_local(LatticeGaugeField Umu, LatticeStaggeredFermi
   // will need another conditional to ensure dir > i, dir > j.
   WilsonLoops<PeriodicGimplR>::FieldStrength(Bi, Umu, dir, i);  
   WilsonLoops<PeriodicGimplR>::FieldStrength(Bj, Umu, dir, j);
-  
-  tmp = (signs[0]*Bi - signs[0]*signs[1]*Bj) * q;  // only works for z-dir
+
+  make_traceless(Bi) ;
+  make_traceless(Bj) ;
+  double milc_nrm = 8.0 ;
+  tmp = (signs[0]*Bi - signs[0]*signs[1]*Bj) * q * milc_nrm;  // only works for z-dir
   return tmp;
 }
 

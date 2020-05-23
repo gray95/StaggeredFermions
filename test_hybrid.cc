@@ -113,7 +113,7 @@ int main (int argc, char ** argv)
      std::cout <<GridLogMessage<<"** Reading back ILDG conf    *********"<<std::endl;
      std::cout <<GridLogMessage<<"**************************************"<<std::endl;
      emptyUserRecord record;
-     std::string file("../grid-staggered/examples/ckpoint_ildg.4000");
+     std::string file("/home/gray/grid_code/grid-staggered/examples/ckpoint_ildg.4000");
      
      IldgReader _IldgReader;
      _IldgReader.open(file);
@@ -183,7 +183,7 @@ int main (int argc, char ** argv)
         local_src = zero;
         pokeSite(cv,local_src,site);
       
-        if(k) local_src = onemp_local(Umu, local_src, signs, z); 
+        if(k) local_src = zeromp_local(Umu, local_src, signs); 
         Ds.Mdag(local_src, out) ; // apply Mdagger
         local_src = out;
 
@@ -191,7 +191,7 @@ int main (int argc, char ** argv)
         out = zero ;  // intial guess
         CG(HermOp, local_src, out);
 
-	if(k) out = onemp_local(Umu, out, signs, z);
+	if(k) out = zeromp_local(Umu, out, signs);
         // add solution to propagator structure
         FermToProp_s(Qprop[k], out , ic  ) ; 
       }
@@ -206,9 +206,8 @@ int main (int argc, char ** argv)
 
   
   c = trace(adj(Qprop[0]) * Qprop[1]) ; 
-//  c = c * signs[2];	// phase from inversion of M 
+  //c = c * signs[2];	// phase from inversion of M 
   
-
   //  this correlator over the lattice is summed over the spatial
   //   lattice at each timeslice t.
   cout << "\nTp = " << Tp  << "\n"; 
@@ -216,9 +215,9 @@ int main (int argc, char ** argv)
   
 
   // output the correlators
-  cout << "\n\n1-+ HYBRID meson \n\n";
+  cout << "\n\n0-+ HYBRID meson \n\n";
 
-  cout << "\nCorrelator in spin component " << z << endl; 
+//  cout << "\nCorrelator in spin component " << z << endl; 
   for(int tt = 0 ; tt < nt ; ++tt) {  
     cout << tt << " "  <<  real(corr[tt])  << "  " << imag(corr[tt]) << endl ;
   }
