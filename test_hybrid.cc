@@ -183,7 +183,7 @@ int main (int argc, char ** argv)
         local_src = zero;
         pokeSite(cv,local_src,site);
       
-        if(k) local_src = zeromp_local(Umu, local_src, signs); 
+        if(k) local_src = onemp_local(Umu, local_src, signs, z); 
         Ds.Mdag(local_src, out) ; // apply Mdagger
         local_src = out;
 
@@ -191,7 +191,7 @@ int main (int argc, char ** argv)
         out = zero ;  // intial guess
         CG(HermOp, local_src, out);
 
-	if(k) out = zeromp_local(Umu, out, signs);
+	if(k) out = onemp_local(Umu, out, signs, z);
         // add solution to propagator structure
         FermToProp_s(Qprop[k], out , ic  ) ; 
       }
@@ -215,7 +215,7 @@ int main (int argc, char ** argv)
   
 
   // output the correlators
-  cout << "\n\n0-+ HYBRID meson \n\n";
+  cout << "\n\n1-+ HYBRID meson \n\n";
 
 //  cout << "\nCorrelator in spin component " << z << endl; 
   for(int tt = 0 ; tt < nt ; ++tt) {  

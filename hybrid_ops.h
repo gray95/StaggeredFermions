@@ -58,9 +58,11 @@ LatticeStaggeredFermion onemm_local(LatticeGaugeField Umu, LatticeStaggeredFermi
   int i, j;
   if(dir==0) { i=2; j=1;} if(dir==1) {i=2; j=0;} if(dir==2) {i=1; j=0;}
   WilsonLoops<PeriodicGimplR>::FieldStrength(Bi, Umu, i, j); 
+  make_traceless(Bi) ;
+  double milc_nrm = 8.0 ;
   //LatticeStaggeredFermion tmp(grid);
   //tmp = Bi * q;  
-  return Bi * q;
+  return Bi * q * milc_nrm ;
 }
 
 // local operator taste gamma_i
@@ -82,20 +84,19 @@ LatticeStaggeredFermion zeromp_local(LatticeGaugeField Umu, LatticeStaggeredFerm
 }
 
 // local operator from taste gamma_i
-LatticeStaggeredFermion twomp_local(LatticeGaugeField Umu, LatticeStaggeredFermion q, LatticeComplex *signs, int dir)
+LatticeStaggeredFermion twomp_local(LatticeGaugeField Umu, LatticeStaggeredFermion q, LatticeComplex *signs)
 {
   GridBase *grid = Umu._grid;
   //LatticeStaggeredFermion tmp(grid);
-  LatticeColourMatrix Bi(grid); LatticeColourMatrix Bj(grid);
+  LatticeColourMatrix Bx(grid); LatticeColourMatrix By(grid);
   
-  int i, j;
-  if(dir==0) { i=1; j=2;} if(dir==1) {i=2; j=0;} if(dir==2) {i=0; j=1;}
   // will need another conditional to ensure dir < i, dir < j.
-  WilsonLoops<PeriodicGimplR>::FieldStrength(Bi, Umu, i, dir);  
-  WilsonLoops<PeriodicGimplR>::FieldStrength(Bj, Umu, j, dir);
-  
+  WilsonLoops<PeriodicGimplR>::FieldStrength(Bx, Umu, 2, 1);  
+  WilsonLoops<PeriodicGimplR>::FieldStrength(By, Umu, 2, 0);
+  make_traceless(Bx) ;
+  make_traceless(By) ; 
   LatticeStaggeredFermion tmp(grid);
-  tmp = (signs[0]*signs[1]*Bi + signs[1]*signs[2]*Bj) * q;  // only works for x-dir
+  tmp = (signs[0]*signs[1]*Bx + signs[0]*By) * q * 8.0 ;  // only z-dir
   return tmp;
 }
 
